@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const statusCodes = require('http2').constants
-const { COUNTRYES, GENDER, VALUE_FULLNAME } = require('./variable')
+const { COUNTRYES, GENDER, VALUE, PORT } = require('./variable')
 const { v4: uuidv4 } = require('uuid')
 
 
@@ -73,8 +73,28 @@ if (!fullname && !gender){
 if (!/^([a-zA-Z\s\'\-]){3,64}$/.test(fullname)){
     return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
 }
-if (fullname !== VALUE_FULLNAME){
+if (fullname !== VALUE.FULLNAME_VALUE){
     return res.sendStatus(statusCodes.HTTP_STATUS_NO_CONTENT)   
 }
 return res.status(statusCodes.HTTP_STATUS_OK).json({ fullname });
 });
+app.get('v1/user', (req, res) => {
+    const { username, fullname, country, gender } = req.query;
+    if (!country){
+        return res.status(statusCodes.HTTP_STATUS_BAD_REQUEST).json({ error: HTTP_MESSAGES.ERR400.BAD_REQUEST });
+    }
+    if (!/^([a-zA-Z]){2}$/.test(country) || !COUNTRYES.includes(country)) {
+        return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
+    }
+    if (!/^([a-zA-Z\s\'\-]){3,64}$/.test(fullname)) {
+        return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
+    }
+    if (country !== VALUE.COUNTRY_VALUE && fullname !== VALUE.FULLNAME_VALUE){
+        return res.sendStatus(statusCodes.HTTP_STATUS_NO_CONTENT)   
+    }
+    return res.status(statusCodes.HTTP_STATUS_OK).json({ id:uuidv4(), fullname:VALUE.FULLNAME_VALUE });})
+   
+    app.listen(PORT, () => {
+        console.log(`server runs on the port ${PORT}`);
+
+})
