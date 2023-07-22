@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const statusCodes = require('http2').constants
-const { COUNTRYES, GENDER } = require('./variable')
+const { COUNTRYES, GENDER, VALUE_FULLNAME } = require('./variable')
 const { v4: uuidv4 } = require('uuid')
 
 
@@ -67,5 +67,14 @@ if (!id){
 }
 if (!/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/.test(id))
     return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
-if (!fullname && !gender)
+if (!fullname && !gender){
+    return res.sendStatus(statusCodes.HTTP_STATUS_NO_CONTENT)
+}
+if (!/^([a-zA-Z\s\'\-]){3,64}$/.test(fullname)){
+    return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
+}
+if (fullname !== VALUE_FULLNAME){
+    return res.sendStatus(statusCodes.HTTP_STATUS_NO_CONTENT)   
+}
+return res.status(statusCodes.HTTP_STATUS_OK).json({ fullname });
 });
