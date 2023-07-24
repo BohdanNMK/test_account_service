@@ -1,14 +1,14 @@
 const express = require('express');
 const app = express();
 const statusCodes = require('http2').constants
-const { COUNTRYES, GENDER, VALUE, PORT } = require('./variable')
+const { COUNTRYES, GENDER, VALUE, PORT, HTTP_MESSAGES } = require('./variable')
 const { v4: uuidv4 } = require('uuid')
 
 
 app.use(express.json());
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(statusCodes.HTTP_STATUS_BAD_REQUEST).json({ error: HTTP_MESSAGES.BAD_REQUEST });
+    res.status(statusCodes.HTTP_STATUS_BAD_REQUEST).json({ error: HTTP_MESSAGES.ERR400.BAD_REQUEST });
 });
 
 app.post('v1/signup', (req, res) => {
@@ -16,7 +16,7 @@ app.post('v1/signup', (req, res) => {
     const { username, fullname, country, gender, description, approvedTermsAndConditions } = req.body
 
     if (!username && !fullname && !country || (!username || !fullname || !country)) {
-        res.status(statusCodes.HTTP_STATUS_BAD_REQUEST).json({ error: HTTP_MESSAGES.BAD_REQUEST });
+        res.status(statusCodes.HTTP_STATUS_BAD_REQUEST).json({ error: HTTP_MESSAGES.ERR400.ERR_REQUIRED_FIELDS });
     }
     if (!/^\+?(?:[0-9\-\(\)\/\.]\s?){6,15}[0-9]{1}$/.test(username)) {
         return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
@@ -92,8 +92,10 @@ app.get('v1/user', (req, res) => {
     if (country !== VALUE.COUNTRY_VALUE && fullname !== VALUE.FULLNAME_VALUE){
         return res.sendStatus(statusCodes.HTTP_STATUS_NO_CONTENT)   
     }
-    return res.status(statusCodes.HTTP_STATUS_OK).json({ id:uuidv4(), fullname:VALUE.FULLNAME_VALUE });})
+    return res.status(statusCodes.HTTP_STATUS_OK).json({ id:uuidv4(), fullname:VALUE.FULLNAME_VALUE });
+});
    
+
     app.listen(PORT, () => {
         console.log(`server runs on the port ${PORT}`);
 
