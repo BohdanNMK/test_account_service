@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const statusCodes = require('http2').constants
-const { COUNTRYES, GENDER, VALUE, PORT, HTTP_MESSAGES } = require('./variable')
+const { COUNTRIES, GENDER, VALUE, PORT, HTTP_MESSAGES } = require('./variable')
 const { v4: uuidv4 } = require('uuid')
 
 
@@ -18,13 +18,13 @@ app.post('/v1/signup', (req, res) => {
     if (!username && !fullname && !country || (!username || !fullname || !country)) {
         res.status(statusCodes.HTTP_STATUS_BAD_REQUEST).json({ error: HTTP_MESSAGES.ERR400.BAD_REQUEST });
     }
-    if (!/^\+?(?:[0-9\-\(\)\/\.]\s?){6,15}[0-9]{1}$/.test(username)) {//TODO:looc formate  ISO E.164
+    if (!/^+?[1-9]\d{6,15}$/.test(username)) {
         return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
     }
     if (!/^([a-zA-Z\s\'\-]){3,64}$/.test(fullname)) {
         return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
     }
-    if (!/^([a-zA-Z]){2}$/.test(country) || !COUNTRYES.includes(country)) {
+    if (!/^([a-zA-Z]){2}$/.test(country) || !COUNTRIES.includes(country)) {
         return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
     }
     if (!/^([a-zA-Z]){4,6}$/.test(gender) || !GENDER.includes(gender)) {
@@ -49,7 +49,7 @@ app.post('/v1/signin/:username', (req, res) => {
     if (!password) {
         return res.status(statusCodes.HTTP_STATUS_BAD_REQUEST).json({ error: HTTP_MESSAGES.ERR400.BAD_REQUEST });
     }
-    if (!/^\+?(?:[0-9\-\(\)\/\.]\s?){6,15}[0-9]{1}$/.test(username)) {
+    if (!/^+?[1-9]\d{6,15}$/.test(username)) {
         return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
     }
     if (!/^([a-zA-Z0-9\+\-\_]){10,64}/.test(password)) {
@@ -89,7 +89,7 @@ app.get('/v1/user', (req, res) => {
     if (!country) {
         return res.status(statusCodes.HTTP_STATUS_BAD_REQUEST).json({ error: HTTP_MESSAGES.ERR400.BAD_REQUEST });
     }
-    if (!/^([a-zA-Z]){2}$/.test(country) || !COUNTRYES.includes(country)) {
+    if (!/^([a-zA-Z]){2}$/.test(country) || !COUNTRIES.includes(country)) {
         return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
     }
     if (!/^([a-zA-Z\s\'\-]){3,64}$/.test(fullname)) {
