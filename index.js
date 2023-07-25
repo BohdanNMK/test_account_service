@@ -18,7 +18,7 @@ app.post('/v1/signup', (req, res) => {
     if (!username && !fullname && !country || (!username || !fullname || !country)) {
         res.status(statusCodes.HTTP_STATUS_BAD_REQUEST).json({ error: HTTP_MESSAGES.ERR400.BAD_REQUEST });
     }
-    if (!/^+?[1-9]\d{6,15}$/.test(username)) {
+    if (!/^\+?[1-9]\d{6,15}$/.test(username)) {
         return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
     }
     if (!/^([a-zA-Z\s\'\-]){3,64}$/.test(fullname)) {
@@ -49,7 +49,7 @@ app.post('/v1/signin/:username', (req, res) => {
     if (!password) {
         return res.status(statusCodes.HTTP_STATUS_BAD_REQUEST).json({ error: HTTP_MESSAGES.ERR400.BAD_REQUEST });
     }
-    if (!/^+?[1-9]\d{6,15}$/.test(username)) {
+    if (!/^\+?[1-9]\d{6,15}$/.test(username)) {
         return res.status(statusCodes.HTTP_STATUS_UNPROCESSABLE_ENTITY).json({ error: HTTP_MESSAGES.UNPROCESSABLE_ENTITY });
     }
     if (!/^([a-zA-Z0-9\+\-\_]){10,64}/.test(password)) {
