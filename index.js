@@ -4,7 +4,7 @@ const statusCodes = require('http2').constants
 const { COUNTRIES, GENDER, VALUE, PORT, HTTP_MESSAGES } = require('./variable')
 const { v4: uuidv4 } = require('uuid')
 const { USER_NAME_REG_EXP, FULL_NAME_REG_EXP, COUNTRY_REG_EXP, GENDER_REG_EXP,
-        DESCRIRTION_REG_EXP, PASSWORD_REG_EXP, UUID_REG_EXP } = require('./regularExpression')
+    DESCRIRTION_REG_EXP, PASSWORD_REG_EXP, UUID_REG_EXP } = require('./regularExpression')
 
 app.use(express.json());
 app.use((err, req, res, next) => {
@@ -43,9 +43,9 @@ app.post('/v1/signup', (req, res) => {
 
 app.post('/v1/signin/:username', (req, res) => {
     const { username } = req.params;
-    const {password} = req.body;
+    const { password } = req.body;
     let { sendNotification } = req.body;
-    
+
     if (!username) {
         return res.status(statusCodes.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({ error: HTTP_MESSAGES.INTERNAL_SERVER_ERROR });
     }
@@ -84,7 +84,7 @@ app.put('/v1/user/:id', (req, res) => {
     if (fullname === VALUE.FULLNAME_VALUE) {
         return res.status(statusCodes.HTTP_STATUS_OK).json({ fullname });
     }
-   
+
     return res.sendStatus(statusCodes.HTTP_STATUS_NO_CONTENT)
 });
 
