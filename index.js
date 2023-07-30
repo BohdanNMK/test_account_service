@@ -11,9 +11,15 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(statusCodes.HTTP_STATUS_BAD_REQUEST).json({ error: HTTP_MESSAGES.ERR400.BAD_REQUEST });
 });
+app.use((req, res, next) => {
+    req.bodyNewType = "TEst pest";
+    next();
+});
+
 
 app.post('/v1/signup', (req, res) => {
 
+    console.log(req.bodyNewType);
     const { username, fullname, country, description } = req.body;
     let { gender, approvedTermsAndConditions } = req.body;
     if (!username && !fullname && !country || (!username || !fullname || !country)) {
