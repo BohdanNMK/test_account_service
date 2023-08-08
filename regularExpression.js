@@ -7,4 +7,4 @@ module.exports = {
     DESCRIRTION_REG_EXP: new RegExp(/^([a-zA-Z0-9\s\,\.\!\-\'\_]){1,2000}$/),
     PASSWORD_REG_EXP: new RegExp(/^([a-zA-Z0-9\+\-\_]){10,64}$/),
     UUID_REG_EXP: new RegExp(/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/)
-}
+};
