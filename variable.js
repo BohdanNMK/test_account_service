@@ -33,7 +33,7 @@ const STATIC_DATA = {
   },
 };
 const REGEXP = {
-  USER_NAME_REG_EXP: new RegExp ('^\\+?([1-9]){6,15}$'),
+  USER_NAME_REG_EXP: new RegExp ('^\\+?([0-9]){6,15}$'),
   FULL_NAME_REG_EXP: new RegExp(/^([a-zA-Z\s\'\-]){3,64}$/),
   COUNTRY_REG_EXP: new RegExp(STATIC_DATA.COUNTRIES.join('|'), 'i'),
   GENDER_REG_EXP: new RegExp(STATIC_DATA.GENDER.join('|'), 'i'),
